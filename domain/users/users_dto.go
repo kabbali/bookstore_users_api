@@ -18,9 +18,12 @@ type User struct {
 func (user *User) ValidateUser() *errors.RestErr {
 	var rxEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
+	user.FirstName = strings.TrimSpace(strings.ToLower(user.FirstName))
+	user.LastName = strings.TrimSpace(strings.ToLower(user.LastName))
+
 	user.Email = strings.TrimSpace(strings.ToLower(user.Email))
-	if len(user.Email) == 0 {
-		return errors.NewBadRequestError("Invalid email")
+	if user.Email == "" {
+		return errors.NewBadRequestError("Invalid email address")
 	}
 	if len(user.Email) > 254 || !rxEmail.MatchString(user.Email) {
 		errorMessage := fmt.Sprintf("%s is not a valid email address", user.Email)
