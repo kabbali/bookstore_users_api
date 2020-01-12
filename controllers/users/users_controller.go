@@ -27,7 +27,6 @@ func Create(c *gin.Context)  {
 
 	result, savedError := services.CreateUser(user)
 	if savedError != nil {
-		//create user error
 		c.JSON(savedError.Status, savedError)
 		return
 	}
@@ -40,12 +39,7 @@ func Get(c *gin.Context)  {
 		c.JSON(idErr.Status, idErr)
 		return
 	}
-	//userId, userErr := strconv.ParseInt(c.Param("user_id"), 10, 64)
-	//if userErr != nil {
-	//	err := errors.NewBadRequestError("invalid, user id should be a number")
-	//	c.JSON(err.Status, err)
-	//	return
-	//}
+
 	user, getError := services.GetUser(userId)
 	if getError != nil {
 		c.JSON(getError.Status, getError)
@@ -60,12 +54,6 @@ func Update(c *gin.Context) {
 		c.JSON(idErr.Status, idErr)
 		return
 	}
-	//userId, userErr := strconv.ParseInt(c.Param("user_id"), 10, 64)
-	//if userErr != nil {
-	//	err := errors.NewBadRequestError("invalid, user id should be a number")
-	//	c.JSON(err.Status, err)
-	//	return
-	//}
 
 	user := users.User{}
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -101,8 +89,14 @@ func Delete(c *gin.Context)  {
 	c.JSON(http.StatusOK, map[string]string{"status": "deleted"})
 }
 
-//func SearchUser(c *gin.Context)  {
-//	c.String(http.StatusNotImplemented, "SearchUser not implemented")
-//}
+func Search(c *gin.Context)  {
+	status := c.Query("status")
+	result, err := services.Search(status)
+	if err != nil {
+		c.JSON(err.Status, err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
 
 
