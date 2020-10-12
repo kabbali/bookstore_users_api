@@ -1,3 +1,3 @@
-# bookstore_users_api
+# go_mvc_rest_api-users
 
-Users API written in Go using MVC
+Users Rest API for a bookstore project written in Go using MVC
